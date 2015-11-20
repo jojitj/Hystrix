@@ -94,6 +94,7 @@ public class HystrixTimer {
 
             @Override
             public void run() {
+                logger.info("Timer triggerred for instance {}", this);
                 try {
                     listener.tick();
                 } catch (Exception e) {
@@ -103,6 +104,9 @@ public class HystrixTimer {
         };
 
         ScheduledFuture<?> f = executor.get().getThreadPool().scheduleAtFixedRate(r, listener.getIntervalTimeInMilliseconds(), listener.getIntervalTimeInMilliseconds(), TimeUnit.MILLISECONDS);
+        logger.info("Timer scheduled with future instance " + f  +" with runnable" + r + ". current queuesize of scheduler is {} and it's remaining capacity is {}",        		
+        		executor.get().getThreadPool().getQueue().size(),
+        		executor.get().getThreadPool().getQueue().remainingCapacity());
         return new TimerReference(listener, f);
     }
 
@@ -118,6 +122,7 @@ public class HystrixTimer {
         @Override
         public void clear() {
             super.clear();
+            logger.info("Clearing reference and cancelling future {}", this.f);
             // stop this ScheduledFuture from any further executions
             f.cancel(false);
         }
