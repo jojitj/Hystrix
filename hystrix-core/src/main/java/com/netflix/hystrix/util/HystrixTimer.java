@@ -104,7 +104,7 @@ public class HystrixTimer {
         };
 
         ScheduledFuture<?> f = executor.get().getThreadPool().scheduleAtFixedRate(r, listener.getIntervalTimeInMilliseconds(), listener.getIntervalTimeInMilliseconds(), TimeUnit.MILLISECONDS);
-        logger.info("Timer scheduled with future instance " + f  +" with runnable" + r + ". current queuesize of scheduler is {} and it's remaining capacity is {}",        		
+        logger.info("Timer scheduled with future instance " + f  +" with runnable" + r + ". current queuesize of scheduler is {} and it's remaining capacity is {}. Interval time " + listener.getIntervalTimeInMilliseconds(),
         		executor.get().getThreadPool().getQueue().size(),
         		executor.get().getThreadPool().getQueue().remainingCapacity());
         return new TimerReference(listener, f);
